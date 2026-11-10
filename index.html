@@ -6,6 +6,7 @@
 <meta name="theme-color" content="#0c3d36"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="SI CANTIK"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>SI CANTIK (Sistem Informasi - Cermat Akurat Transparan Informatif Komunikatif)</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{--bg:#f1f5f3;--sf:#fff;--ink:#14302b;--mu:#5b6f6a;--ac:#0e6b5c;--acs:#dcf0ea;--ln:#d6e1dd;--red:#b3261e;--redbg:#fde8e6;--amb:#8f5400;--ambbg:#fff0d4;--grn:#1b7a3d;--grnbg:#ddf2e3;--hd:#0c3d36;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px)}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1917;--sf:#16251f;--ink:#e4efeb;--mu:#98b0a9;--ac:#4cc3ac;--acs:#1c3a33;--ln:#2a423b;--red:#ff8f86;--redbg:#3d1d1a;--amb:#f2b45a;--ambbg:#3a2a0e;--grn:#7bd896;--grnbg:#17361f;--hd:#0a2a25}}
@@ -193,6 +194,13 @@ window.addEventListener("hashchange",()=>{render();window.scrollTo(0,0)});
 (async()=>{try{const db=await claude.use("db");if(!db){off();return}dbDoc=db.doc("sicantik/main");dbDoc.onSnapshot(s=>{if(syncSt!=="ok"){syncSt="ok";if(!auth&&!/INPUT/.test(document.activeElement.tagName))render()}if(!s.exists||s.metadata.hasPendingWrites)return;try{const n=norm(JSON.parse(s.data().json));if((n.rev||0)<(ALL.rev||0)||JSON.stringify(n)===JSON.stringify(ALL))return;ALL=n;sync();try{localStorage.setItem(KEY,JSON.stringify(ALL))}catch(e){}if(!/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName))render()}catch(e){}},()=>off())}catch(e){off()}})();
 function off(){syncSt="off";if(!/INPUT/.test(document.activeElement.tagName))render()}
 render();
+// Konfigurasi Supabase SI-CANTIK
+const SUPABASE_URL = 'https://wixrogboyoaoxbaplyqc.supabase.co'; 
+const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_plvLpGWSmKRuA_UHreu_cA_Z'; 
+
+const { createClient } = supabase;
+const _supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+
 </script>
 </body>
 </html>
