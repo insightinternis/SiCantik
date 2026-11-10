@@ -13,7 +13,7 @@
 :root[data-theme="dark"]{--bg:#0e1917;--sf:#16251f;--ink:#e4efeb;--mu:#98b0a9;--ac:#4cc3ac;--acs:#1c3a33;--ln:#2a423b;--red:#ff8f86;--redbg:#3d1d1a;--amb:#f2b45a;--ambbg:#3a2a0e;--grn:#7bd896;--grnbg:#17361f;--hd:#0a2a25}
 *{box-sizing:border-box}html,body{margin:0}
 body{background:var(--bg);color:var(--ink);font:16px/1.5 "DM Sans",system-ui,sans-serif;padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))}
-.w{max-width:560px;margin:0 auto;padding:0 16px}
+ .w{max-width:560px;margin:0 auto;padding:0 16px}
 h1,h2{font-family:"Cormorant Garamond",Georgia,serif;margin:0}
 header{background:linear-gradient(160deg,var(--hd),color-mix(in srgb,var(--hd) 65%,var(--ac)));color:#eaf6f2;padding:24px 0 74px;border-radius:0 0 28px 28px}
 header .w{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
@@ -56,6 +56,47 @@ nav a.on{color:var(--ac);border-top-color:var(--ac);background:var(--acs);font-w
 </style>
 </head>
 <body>
+<!-- Menu Pilihan Mode Perawat / Pasien -->
+    <div id="mode-selector" style="display: flex; gap: 10px; justify-content: center; margin: 15px 0; background: #fff; padding: 10px; border-radius: 8px;">
+        <button onclick="switchMode('perawat')" id="btn-perawat" style="padding: 8px 16px; font-weight: bold; cursor: pointer; border-radius: 6px; border: 1px solid #0c3d36; background: #0c3d36; color: white;">
+            🩺 Mode Perawat (Input)
+        </button>
+        <button onclick="switchMode('pasien')" id="btn-pasien" style="padding: 8px 16px; font-weight: bold; cursor: pointer; border-radius: 6px; border: 1px solid #0c3d36; background: white; color: #0c3d36;">
+            👤 Mode Pasien (Lihat)
+        </button>
+    </div>
+
+    <!-- Area Form Input (Mode Perawat) -->
+    <div id="view-perawat" style="display: block; background: #fff; padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #ccc;">
+        <h4 style="margin-top: 0;">Form Input Rekam Medis Supabase</h4>
+        <form id="form-perawat" onsubmit="handleFormSubmit(event)">
+            <div style="margin-bottom: 8px;">
+                <label style="font-size: 14px; display: block;">Nama Pasien:</label>
+                <input type="text" id="input-nama" required style="width: 100%; padding: 6px; border: 1px solid #ccc; border-radius: 4px;">
+            </div>
+            <div style="margin-bottom: 8px;">
+                <label style="font-size: 14px; display: block;">Nilai Parameter / Hasil:</label>
+                <input type="text" id="input-param" required style="width: 100%; padding: 6px; border: 1px solid #ccc; border-radius: 4px;">
+            </div>
+            <div style="margin-bottom: 8px;">
+                <label style="font-size: 14px; display: block;">Catatan Klinis:</label>
+                <textarea id="input-catatan" style="width: 100%; padding: 6px; border: 1px solid #ccc; border-radius: 4px;"></textarea>
+            </div>
+            <button type="submit" style="background: #0c3d36; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-weight: bold;">
+                Simpan ke Database
+            </button>
+        </form>
+    </div>
+
+    <!-- Area Tampilan Baca (Mode Pasien) -->
+    <div id="view-pasien" style="display: none; background: #fff; padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #ccc;">
+        <h4 style="margin-top: 0;">Status & Pemantauan Pasien</h4>
+        <button onclick="loadDataPasien()" style="padding: 6px 12px; margin-bottom: 10px; cursor: pointer; background: #f0f0f0; border: 1px solid #ccc; border-radius: 4px;">🔄 Perbarui Data</button>
+        <div id="pasien-data-container">
+            <p style="font-style: italic; color: #666;">Klik tombol perbarui untuk memuat data...</p>
+        </div>
+    </div>
+
 <div id="app"></div>
 <script>
 const KEY="sicantik-v1";
